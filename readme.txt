@@ -8,3 +8,4 @@
 create a new branch is quick
 冲突2
 冲突1
+update file master 
