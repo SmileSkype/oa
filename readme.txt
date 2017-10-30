@@ -10,3 +10,4 @@ create a new branch is quick
 冲突1
 update file master 
 update file dev
+Git is a free sofeware
