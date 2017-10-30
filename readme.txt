@@ -12,3 +12,4 @@ update file master
 update file dev
 Git is a free sofeware
 测试bug分支
+多人协作是 dev 分支修改
