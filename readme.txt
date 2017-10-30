@@ -11,3 +11,4 @@ create a new branch is quick
 update file master 
 update file dev
 Git is a free sofeware
+测试bug分支
