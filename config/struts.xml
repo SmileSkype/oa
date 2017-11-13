@@ -6,4 +6,5 @@
 	<!-- 配置文件改了以后不用重新启动 -->
     <!-- <constant name="struts.devMode" value="false"/> -->
 	<include file="struts/struts-person.xml"></include>
+	<include file="struts/struts-department.xml"></include>
 </struts>
