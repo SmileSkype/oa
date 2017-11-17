@@ -18,7 +18,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	public void saveDepartment(Department department) {
-		departmentDao.saveDepartment(department);
+//		departmentDao.saveDepartment(department);  重构前的代码
+		departmentDao.saveEntry(department);
 	}
 
 	public void updateDepartment(Department department) {

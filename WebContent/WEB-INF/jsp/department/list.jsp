@@ -46,21 +46,19 @@
 			<!-- 
 				iterator说明：
 					正在迭代的元素位于栈顶
-					如果value属性不写，则认为是对象栈中的栈顶元素
-					如果value=top,则认为是迭代对象栈中的栈顶元素
-					如果是map栈，不写value或者value=top则无法得到想要的结果
-			
+					 如果value属性不写，或者value="top",则认为是迭代的对象栈的栈顶元素
 			 -->
-			<s:iterator value="#request.departmentList">
+			<s:iterator value="departmentList">
 				<tr class="TableDe.tail1 template">
 					<td align="center"><s:property value="dname"/></td>
-					<td align="center"><s:property value="description"/></td>
+					<td align="center"><s:property value="description" escape="false"/></td>
 					<!-- 
 						在struts2的标签中，只能用ognl表达式，不能用el表达式
 						在html标签中，只能用el表达式，不能用ognl表达式
 					 -->
 					<td align="center"><s:a action="departmentAction_deleteDepartmentById.action?did=%{did}">删除</s:a>
-						<a href="saveUI.html">修改</a>
+						<!-- <a href="departmentAction_toUpdate.action?did=%{did}">修改</a>  此处出错的原因是html标签中使用了ognl表达式-->
+						<s:a href="departmentAction_toUpdate.action?did=%{did}">修改</s:a>
 					</td>
 				</tr>
 			</s:iterator>
@@ -74,7 +72,7 @@
 			
 			<!-- list里面嵌套map,list放在了对象栈中 -->
 			<%-- <s:iterator>
-				<s:iterator value="top">
+				<s:iterator>
 					<s:property value="key"/>
 					<s:property value="value.dname"/>
 				</s:iterator>
@@ -94,7 +92,7 @@
     <!-- 其他功能超链接 -->
     <div id="TableTail">
         <div id="TableTail_inside">
-            <a href="saveUI.html"><img src="${pageContext.request.contextPath}/css/images/createNew.png" /></a>
+            <a href="departmentAction_addUI.action"><img src="${pageContext.request.contextPath}/css/images/createNew.png" /></a>
         </div>
     </div>
 </div>

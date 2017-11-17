@@ -21,9 +21,9 @@ $().ready(function(){
 //	});
 	
 	$.confirm({
-		message:"你",
+		message:"您是否确定要删除？",
 		callback:function(){
-			alert("wojiushi niu");
+			alert("我只是一个弹出框");
 		}
 	});
 });

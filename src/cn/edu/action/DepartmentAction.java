@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -18,11 +19,13 @@ import cn.edu.domain.Department;
 import cn.edu.service.DepartmentService;
 import cn.edu.utils.DeleteModel;
 @SuppressWarnings("all")
-public class DepartmentAction extends BaseAction implements ModelDriven<Department> {
-	private Department model = new Department();
-	public Department getModel() {
-		return model;
-	}
+public class DepartmentAction extends BaseAction<Department> {
+//	重构前
+//	public class DepartmentAction extends BaseAction implements ModelDriven<Department> {
+//	private Department model = new Department();
+//	public Department getModel() {
+//		return model;
+//	}
 	private DepartmentService departmentService;
 	public DepartmentService getDepartmentService() {
 		return departmentService;
@@ -30,7 +33,6 @@ public class DepartmentAction extends BaseAction implements ModelDriven<Departme
 	public void setDepartmentService(DepartmentService departmentService) {
 		this.departmentService = departmentService;
 	}
-	
 	
 	
 	public String getAllDepartment() throws Exception {
@@ -58,7 +60,7 @@ public class DepartmentAction extends BaseAction implements ModelDriven<Departme
 //		//移除对象栈的栈顶的元素
 //		ActionContext.getContext().getValueStack().pop();
 //		ActionContext.getContext().getValueStack().getRoot().remove(0);
-//		//把一个map放入到map栈的栈顶
+//		//把一个map放入到对象栈的栈顶
 //		ActionContext.getContext().getValueStack().set("departmentList", departmentList);
 		/**
 		 * 对象栈的说明
@@ -83,43 +85,116 @@ public class DepartmentAction extends BaseAction implements ModelDriven<Departme
 		//把一个对象存放到map中
 //		ActionContext.getContext().put("departmentList", departmentList);
 		//#request.departmentList
-		ServletActionContext.getRequest().setAttribute("departmentList", departmentList);
+//		ServletActionContext.getRequest().setAttribute("departmentList", departmentList);
 		
 		/**
 		 * list里面嵌套list
 		 */
-//		List<List<Department>> lists = new ArrayList<List<Department>>();
-//		Department d1 = new Department();
-//		d1.setDname("d1_name");
-//		Department d2 = new Department();
-//		d2.setDname("d2_name");
-//		List<Department> list1 = new ArrayList<Department>();
-//		list1.add(d1);
-//		List<Department> list2 = new ArrayList<Department>();
-//		list2.add(d2);
-//		lists.add(list1);
-//		lists.add(list2);
-		
-//		List<Map<String, Department>> lists = new ArrayList<Map<String,Department>>();
-//		Map<String,Department> map1 = new HashMap<String, Department>();
-//		Map<String,Department> map2 = new HashMap<String, Department>();
-//		map1.put("d1", d1);
-//		map2.put("d2", d2);
-//		lists.add(map1);
-//		lists.add(map2);
-//		ActionContext.getContext().getValueStack().push(lists);
-		
-//		Map<String, List<Department>> maps = new HashMap<String, List<Department>>();
-//		maps.put("list1",list1);
-//		maps.put("list2", list2);
-//		ActionContext.getContext().put("maps", maps);
+//		test1();
+//		test2();
+//		test3();
+		ActionContext.getContext().put("departmentList", departmentList);
 		return listAction;
 	}
-	
-	
-	public String deleteDepartmentById() throws Exception {
-		departmentService.deleteDepartmentById(model.getDid(), DeleteModel.DEL_PRE_RELEASE);
-		return action2action;
+	private void test3() {
+		Department d1 = new Department();
+		d1.setDname("d1_name");
+		Department d2 = new Department();
+		d2.setDname("d2_name");
+		List<Department> list1 = new ArrayList<Department>();
+		list1.add(d1);
+		List<Department> list2 = new ArrayList<Department>();
+		list2.add(d2);
+		Map<String, List<Department>> maps = new HashMap<String, List<Department>>();
+		maps.put("list1",list1);
+		maps.put("list2", list2);
+		ActionContext.getContext().put("maps", maps);
+	}
+	private void test2() {
+		Department d1 = new Department();
+		d1.setDname("d1_name");
+		Department d2 = new Department();
+		d2.setDname("d2_name");
+		List<Map<String, Department>> lists = new ArrayList<Map<String,Department>>();
+		Map<String,Department> map1 = new HashMap<String, Department>();
+		Map<String,Department> map2 = new HashMap<String, Department>();
+		map1.put("d1", d1);
+		map2.put("d2", d2);
+		lists.add(map1);
+		lists.add(map2);
+		ActionContext.getContext().getValueStack().push(lists);
+	}
+	private void test1() {
+		List<List<Department>> lists = new ArrayList<List<Department>>();
+		Department d1 = new Department();
+		d1.setDname("d1_name");
+		Department d2 = new Department();
+		d2.setDname("d2_name");
+		List<Department> list1 = new ArrayList<Department>();
+		list1.add(d1);
+		List<Department> list2 = new ArrayList<Department>();
+		list2.add(d2);
+		lists.add(list1);
+		lists.add(list2);
+		ActionContext.getContext().getValueStack().push(lists);
 	}
 	
+	/**
+	 * 根据id删除
+	 */
+	public String deleteDepartmentById() throws Exception {
+		departmentService.deleteDepartmentById(this.getModel().getDid(), DeleteModel.DEL_PRE_RELEASE);
+		return action2action;
+	}
+	/**
+	 * 跳转到增加部门页面
+	 */
+	public String addUI() throws Exception {
+		return addUI;
+	}
+	/**
+	 * 新增部门
+	 */
+	public String add() throws Exception {
+		/**
+		 * 1、新建department对象
+		 * 2、将model中属性的值赋值给department
+		 * 3、使用save方法进行保存，新增进数据库
+		 */
+		Department department = new Department();
+		/**
+		 * 对象的属性赋值的过程
+		 */
+		BeanUtils.copyProperties(department, this.getModel());
+//		departmentService.saveDepartment(department);   //重构前的代码
+		departmentService.saveDepartment(department);
+		return action2action;
+	}
+	/**
+	 * 跳转修改页面,由于页面要进行数据回显，所以需要将部门的id传过来
+	 * 一般情况下，如果数据进行回显，则把数据放入到对象栈中，页面上可以根据name属性的值进行回显
+	 * 如果把数据放入了map栈，则页面根据value的值进行回显，而且value="%{ognl表达式}"
+	 */
+	public String toUpdate() throws Exception {
+		//获取部门的详细信息
+		Department department = departmentService.getDepartmentById(this.getModel().getDid());
+//		ActionContext.getContext().getValueStack().push(department);
+//		ActionContext.getContext().put("department", department);
+		BeanUtils.copyProperties(this.getModel(),department);
+		return updateUI;
+	}
+	/**
+	 * 保存修改后的数据，写入数据库
+	 */
+	public String update() throws Exception {
+		/**
+		 * 1、先根据id,将department从数据库或者session的缓存中取出来
+		 * 2、把修改的数据赋值到该对象中
+		 * 3、保存到数据库
+		 */
+		Department department = departmentService.getDepartmentById(this.getModel().getDid());
+		BeanUtils.copyProperties(department, this.getModel());
+		departmentService.updateDepartment(department);
+		return action2action;
+	}
 }

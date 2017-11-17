@@ -8,13 +8,16 @@ import java.util.Set;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import cn.edu.dao.DepartmentDao;
+import cn.edu.dao.base.BaseDaoImpl;
 import cn.edu.domain.Department;
 import cn.edu.domain.User;
 
-public class DepartmentDaoImpl extends HibernateDaoSupport implements DepartmentDao {
+public class DepartmentDaoImpl extends BaseDaoImpl<Department> implements DepartmentDao<Department> {
+//	public class DepartmentDaoImpl extends HibernateDaoSupport implements DepartmentDao { 重构前的代码
 
 	public void saveDepartment(Department department) {
-		this.getHibernateTemplate().save(department);
+//		this.getHibernateTemplate().save(department);  //重构前的代码
+		this.saveEntry(department);
 	}
 
 	public void updateDepartment(Department department) {

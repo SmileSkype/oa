@@ -35,5 +35,16 @@
 	</aop:config>
 	
 	
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>
+	</bean>
+	<!-- <bean id="baseDaoImpl" class="cn.edu.dao.base.BaseDaoImpl" abstract="true">
+		<property name="hibernateTemplate">
+			<ref bean="hibernateTemplate"/>
+		</property>
+	</bean> -->
+	
 	
 </beans>

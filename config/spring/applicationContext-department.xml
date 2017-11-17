@@ -13,10 +13,16 @@
 	http://www.springframework.org/schema/tx 
 	http://www.springframework.org/schema/tx/spring-tx.xsd">
 	
-	<bean id="departmentDao" class="cn.edu.dao.impl.DepartmentDaoImpl">
+	<!-- <bean id="departmentDao" class="cn.edu.dao.impl.DepartmentDaoImpl">
 		<property name="sessionFactory">
 			<ref bean="sessionFactory"/>
 		</property>
+	</bean> -->
+	<!-- 第一种解决方案 -->
+	<!-- <bean id="departmentDao" class="cn.edu.dao.impl.DepartmentDaoImpl" parent="baseDaoImpl"></bean> -->
+	<!-- 第二种解决方案，更简单 -->
+	<bean id="departmentDao" class="cn.edu.dao.impl.DepartmentDaoImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate"></property>
 	</bean>
 	<bean id="departmentService" class="cn.edu.service.impl.DepartmentServiceImpl">
 		<property name="departmentDao" ref="departmentDao"></property>
